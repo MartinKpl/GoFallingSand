@@ -73,10 +73,15 @@ func (g *Game) Update() error {
 
 	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) { //we place a grain of sand if mouse is clicked
 		x, y := ebiten.CursorPosition()
-		grid[int64(x/sandGrainSize)][int64(y/sandGrainSize)] = true
-	}
 
-	// sandColor = color.RGBA{R: 255, G: 165, B: 0, A: 255}
+		i := int(x / sandGrainSize)
+		j := int(y / sandGrainSize)
+
+		if i >= 0 && i < len(grid) && j >= 0 && j < len(grid[i]) {
+			grid[i][j] = true
+		}
+
+	}
 
 	sandColor = rainbowColorForIteration(g.iterationCount)
 	g.iterationCount++
@@ -100,7 +105,6 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 func main() {
 
 	grid[int64((width/sandGrainSize)/2)][int64((height/sandGrainSize)/2)] = true
-	// colorGrid [int64(width / sandGrainSize)][int64(height / sandGrainSize)] = color.RGBA{R: 255, G: 165, B: 0, A: 255}
 
 	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("Falling Sand")
